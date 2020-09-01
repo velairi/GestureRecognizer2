@@ -93,7 +93,9 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(scoreCounter)"
         }
         fadeOutScorePlusOrMinusLabel()
-        fadeDirectionLabelOutThenIn()
+        let randomIndex = Int.random(in: 0..<directions.count)
+        directionLabel.text = directions[randomIndex]
+        fadeDirectionLabel()
     }
 
     func runTimer() {
@@ -125,20 +127,15 @@ class ViewController: UIViewController {
         }
     }
 
-    func fadeDirectionLabelOutThenIn() {
-        let animationDuration = 0.1
-
-        // Fade in the view
-        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
-            self.directionLabel.alpha = 0
+    func fadeDirectionLabel() {
+        UIView.transition(with: directionLabel, duration: 0.1, options: .transitionFlipFromBottom, animations: { () -> Void in
+            self.directionLabel.isHidden = true
         }) { (Bool) -> Void in
-
-            // After the animation completes, fade out the view after a delay
-            UIView.animate(withDuration: animationDuration, delay: 0.1, options: [.curveEaseOut], animations: { () -> Void in
-                let randomIndex = Int.random(in: 0..<self.directions.count)
-                self.directionLabel.text = self.directions[randomIndex]
-                self.directionLabel.alpha = 1
-            }, completion: nil)
+            UIView.transition(with: self.directionLabel, duration: 0.1,
+                              options: .transitionFlipFromBottom,
+                              animations: {
+                                self.directionLabel.isHidden = false
+            })
         }
     }
 }
