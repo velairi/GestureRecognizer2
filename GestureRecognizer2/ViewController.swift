@@ -19,10 +19,11 @@ class ViewController: UIViewController {
     let directions = ["Swipe Up", "Swipe Down", "Swipe Left", "Swipe Right"]
     var timeCounter = 0
     var scoreCounter = 0
-    var timer = Timer()
+    var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        runTimer()
 
         let randomIndex = Int.random(in: 0..<directions.count)
         directionLabel.text = directions[randomIndex]
@@ -95,7 +96,17 @@ class ViewController: UIViewController {
         fadeDirectionLabelOutThenIn()
     }
 
-    @objc func timerAction() {
+    func runTimer() {
+         timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateTimer)), userInfo: nil, repeats: true)
+    }
+
+    @objc func updateTimer() {
+        //stop updating timeLabel
+        if timeCounter >= 60 {
+            timer?.invalidate()
+            timer = nil
+            return
+        }
         timeCounter += 1
         timeLabel.text = "Time: \(timeCounter)"
     }
