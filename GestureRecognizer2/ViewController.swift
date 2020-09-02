@@ -104,13 +104,63 @@ class ViewController: UIViewController {
 
     @objc func updateTimer() {
         //stop updating timeLabel
-        if timeCounter >= 60 {
-            timer?.invalidate()
-            timer = nil
-            return
-        }
+        endTimer()
         timeCounter += 1
         timeLabel.text = "Time: \(timeCounter)"
+    }
+
+    func endTimer() {
+        if timeCounter == 29 {
+            timer?.invalidate()
+            timer = nil
+            endGame()
+            return
+        }
+        return
+    }
+
+    func endGame() {
+        //1. add detailed info onto view about game ending, total score, score to beat, highest scores among all users, playAgainButton
+        let endGameView = UIView()
+        endGameView.backgroundColor = .yellow
+        endGameView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: view.frame.height)
+        endGameView.center.x = self.view.center.x
+
+        let brandLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width/2))
+        brandLabel.center.x = self.view.center.x
+        brandLabel.center.y = self.view.center.y - 150
+        brandLabel.text = "Swipe Swipe Revolution"
+        brandLabel.font = UIFont(name: "AvenirNext-HeavyItalic", size: 40)
+        brandLabel.numberOfLines = 0
+        brandLabel.textAlignment = .center
+        endGameView.addSubview(brandLabel)
+
+
+        let totalScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width/2, height: view.frame.width/4))
+        totalScoreLabel.backgroundColor = .white
+        totalScoreLabel.center.x = self.view.center.x
+        totalScoreLabel.center.y = self.view.center.y
+        totalScoreLabel.text = "Your Score: \(scoreCounter)"
+        totalScoreLabel.font = UIFont(name: "Avenir-Black", size: 20)
+        totalScoreLabel.numberOfLines = 0
+        totalScoreLabel.textAlignment = .center
+        endGameView.addSubview(totalScoreLabel)
+
+        //TO DO: Fix and enable playAgainButton
+        let playAgainButton = UIButton(frame: CGRect(x: 0, y: 50, width: view.frame.width/2, height: view.frame.width/2))
+        playAgainButton.center.x = self.view.center.x
+        playAgainButton.center.y = self.view.center.y + view.frame.width/2
+        playAgainButton.titleLabel?.text = "Play Again"
+        playAgainButton.titleLabel?.textColor = .white
+        playAgainButton.titleLabel?.textAlignment = .center
+        playAgainButton.titleLabel?.numberOfLines = 0
+        playAgainButton.backgroundColor = .green
+//        endGameView.addSubview(playAgainButton)
+
+        view.addSubview(endGameView)
+        UIView.animate(withDuration: 1.0, delay: 0.1, options: .curveLinear, animations: {
+            endGameView.frame.origin.y = 0
+        }, completion: nil)
     }
 
     func fadeOutScorePlusOrMinusLabel() {
